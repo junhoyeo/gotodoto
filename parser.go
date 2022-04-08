@@ -25,14 +25,19 @@ func ToLines(content string) []string {
 
 func Parse(content string) []string {
 	lines := ToLines(content)
-	var pattern string = "TODO: [^\n]*"
+	parsed := make([]string, 0, len(lines))
 
-	return Map(lines, func(line string) string {
-		re := regexp.MustCompile(pattern)
+	var pattern string = "TODO: [^\n]*"
+	re := regexp.MustCompile(pattern)
+
+	var index uint64 = 0
+	for _, line := range lines {
 		matches := re.FindAllString(line, -1)
 		if len(matches) == 0 {
-			return ""
+			continue
 		}
-		return matches[0]
-	})
+		parsed = append(parsed, matches[0])
+		index++
+	}
+	return parsed
 }

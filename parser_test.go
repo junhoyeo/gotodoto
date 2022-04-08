@@ -46,11 +46,31 @@ func TestToLines_should_handle_empty(t *testing.T) {
 	}
 }
 
-func TestParse(t *testing.T) {
+func TestParse_single_comment(t *testing.T) {
 	got := Parse(`
 		// TODO: We will fix this someday
 	`)
 	want := []string{"TODO: We will fix this someday"}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %q, wanted %q", got, want)
+	}
+}
+
+func TestParse_multiple_comment(t *testing.T) {
+	got := Parse(`
+		/*
+			TODO: We will fix this someday
+			I mean, really.
+		*/
+		let wrong = 1;
+
+		// TODO: Yes we will fix this. Soon.
+		wrong = 2;
+	`)
+	want := []string{
+		"TODO: We will fix this someday", "TODO: Yes we will fix this. Soon.",
+	}
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %q, wanted %q", got, want)
