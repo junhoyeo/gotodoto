@@ -27,7 +27,7 @@ func Parse(content string) []string {
 	lines := ToLines(content)
 	parsed := make([]string, 0, len(lines))
 
-	var pattern string = "TODO: [^\n]*"
+	var pattern string = "TODO: [^*/\n]*"
 	re := regexp.MustCompile(pattern)
 
 	var index uint64 = 0
@@ -36,7 +36,8 @@ func Parse(content string) []string {
 		if len(matches) == 0 {
 			continue
 		}
-		parsed = append(parsed, matches[0])
+		matched := strings.TrimSpace(matches[0])
+		parsed = append(parsed, matched)
 		index++
 	}
 	return parsed

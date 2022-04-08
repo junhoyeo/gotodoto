@@ -67,9 +67,14 @@ func TestParse_multiple_comment(t *testing.T) {
 
 		// TODO: Yes we will fix this. Soon.
 		wrong = 2;
+
+		if (!wrong) return null; // TODO: you might want to throw an error here?
+
+		/* TODO: Stringify output */
+		console.log(wrong);
 	`)
 	want := []string{
-		"TODO: We will fix this someday", "TODO: Yes we will fix this. Soon.",
+		"TODO: We will fix this someday", "TODO: Yes we will fix this. Soon.", "TODO: you might want to throw an error here?", "TODO: Stringify output",
 	}
 
 	if !reflect.DeepEqual(got, want) {
